@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ModelWatch tracks AI API model changes, deprecations and pricing updates before they break your application.">
+  <title>ModelWatch — AI API change tracking</title>
+  <style>
+    :root { --bg:#0b0e0d; --panel:#111613; --line:#27332c; --text:#edf4ed; --muted:#91a097; --green:#b9f36b; --green2:#6fe4a2; --amber:#f4c56b; --red:#ff8d7b; --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace; --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.5; }
+    a { color:inherit; }
+    .wrap { width:min(1120px,calc(100% - 40px)); margin:auto; }
+    .top { border-bottom:1px solid var(--line); background:rgba(11,14,13,.92); position:sticky; top:0; z-index:5; backdrop-filter:blur(12px); }
+    nav { height:68px; display:flex; align-items:center; justify-content:space-between; }
+    .brand { display:flex; gap:10px; align-items:center; font-family:var(--mono); font-size:14px; letter-spacing:.04em; font-weight:700; }
+    .mark { width:24px; height:24px; border:1px solid var(--green); display:grid; place-items:center; color:var(--green); font-size:12px; }
+    .navlinks { display:flex; gap:24px; align-items:center; color:var(--muted); font-size:13px; }
+    .navlinks a { text-decoration:none; }
+    .navlinks a:hover { color:var(--text); }
+    .pill { border:1px solid #53674f; color:var(--green); border-radius:999px; padding:6px 10px; font:11px var(--mono); letter-spacing:.05em; text-transform:uppercase; }
+    main { overflow:hidden; }
+    .hero { padding:100px 0 80px; display:grid; grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr); gap:72px; align-items:center; }
+    .eyebrow { color:var(--green); font:12px var(--mono); letter-spacing:.12em; text-transform:uppercase; margin:0 0 22px; }
+    h1 { font-size:clamp(44px,6vw,76px); line-height:1.01; letter-spacing:-.065em; max-width:760px; margin:0 0 26px; font-weight:700; }
+    .hero h1 em { color:var(--green); font-style:normal; }
+    .lead { color:var(--muted); max-width:570px; font-size:18px; margin:0 0 32px; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .button { display:inline-flex; min-height:46px; padding:0 17px; align-items:center; justify-content:center; border-radius:6px; border:1px solid var(--line); text-decoration:none; font-weight:650; font-size:14px; cursor:pointer; }
+    .button.primary { color:#0b0e0d; background:var(--green); border-color:var(--green); }
+    .button.secondary { color:var(--text); background:transparent; }
+    .button:hover { transform:translateY(-1px); filter:brightness(1.05); }
+    .terminal { border:1px solid var(--line); border-radius:8px; background:#0d1210; box-shadow:0 28px 80px rgba(0,0,0,.32); overflow:hidden; }
+    .termbar { height:38px; display:flex; align-items:center; gap:7px; padding:0 14px; border-bottom:1px solid var(--line); color:var(--muted); font:11px var(--mono); }
+    .dot { width:8px; height:8px; border-radius:50%; background:#526158; }
+    .dot:first-child { background:#e6826f; }.dot:nth-child(2){background:#eac36a}.dot:nth-child(3){background:#8bcf78}
+    .termtitle { margin-left:8px; }
+    pre { margin:0; padding:22px; overflow:auto; color:#c9d7c9; font:12px/1.75 var(--mono); }
+    .k { color:var(--green); }.v { color:#e9c783; }.s { color:#94d9b0; }.comment { color:#59685f; }
+    .section { padding:82px 0; border-top:1px solid var(--line); }
+    .section-head { display:flex; justify-content:space-between; gap:30px; align-items:end; margin-bottom:28px; }
+    h2 { font-size:34px; letter-spacing:-.04em; margin:0; }
+    .section-head p { color:var(--muted); max-width:470px; margin:0; }
+    .proof { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .proof-card { border:1px solid var(--line); background:var(--panel); border-radius:7px; padding:20px; min-height:150px; }
+    .proof-card strong { display:block; font-size:17px; margin:11px 0 7px; }.proof-card p { color:var(--muted); font-size:13px; margin:0; }.proof-tag { color:var(--green); font:11px var(--mono); text-transform:uppercase; }
+    .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }.filter { border:1px solid var(--line); color:var(--muted); background:transparent; padding:8px 11px; border-radius:4px; cursor:pointer; font:12px var(--mono); }.filter.active,.filter:hover{border-color:#6b8b65;color:var(--green);background:#132019}
+    .events { display:grid; gap:10px; }.event { display:grid; grid-template-columns:145px 1fr auto; gap:20px; align-items:start; border:1px solid var(--line); background:var(--panel); border-radius:7px; padding:19px 20px; }.event.hidden{display:none}.event-provider{font:12px var(--mono);color:var(--green2)}.event-type{color:var(--amber);font:11px var(--mono);text-transform:uppercase;margin-top:5px}.event h3{font-size:17px;margin:0 0 5px}.event p{font-size:13px;color:var(--muted);margin:0;max-width:650px}.event-meta{text-align:right;font:11px var(--mono);color:var(--muted);white-space:nowrap}.event-meta b{display:block;color:var(--red);font-weight:500;margin-bottom:7px}.event a{display:inline-block;color:var(--green);margin-top:10px;font-size:12px;text-decoration:none}.event a:hover{text-decoration:underline}
+    .split { display:grid; grid-template-columns:1fr 1fr; gap:16px; }.box { background:var(--panel); border:1px solid var(--line); border-radius:7px; padding:24px; }.box h3{margin:0 0 12px;font-size:18px}.box p,.box li{color:var(--muted);font-size:14px}.box ul{margin:0;padding-left:20px}.box li+li{margin-top:8px}
+    .join { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }.join p{color:var(--muted);max-width:500px}.form{border:1px solid var(--line);background:var(--panel);border-radius:7px;padding:22px}.field{margin-bottom:14px}.field label{display:block;color:var(--muted);font:11px var(--mono);text-transform:uppercase;margin-bottom:7px}.field input,.field select{width:100%;background:#0c110e;color:var(--text);border:1px solid var(--line);border-radius:4px;padding:12px;font:14px var(--sans)}.field input:focus,.field select:focus{outline:2px solid #557846;outline-offset:1px}.form small{display:block;color:#708077;font-size:11px;margin-top:12px}.success{display:none;color:var(--green);font-size:13px;margin-top:12px}.success.show{display:block}
+    footer { border-top:1px solid var(--line); padding:28px 0 40px; color:#6f7c73; font:12px var(--mono); display:flex; justify-content:space-between; gap:20px; }.footer-note{max-width:650px}
+    @media(max-width:800px){.hero,.join{grid-template-columns:1fr;gap:40px;padding-top:65px}.proof,.split{grid-template-columns:1fr}.event{grid-template-columns:1fr;gap:8px}.event-meta{text-align:left}.navlinks{gap:12px}.navlinks a:not(.keep){display:none}h2{font-size:28px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="wrap"><nav><a class="brand" href="#top" aria-label="ModelWatch home"><span class="mark">↗</span> MODELWATCH</a><div class="navlinks"><a href="#changes">Changelog</a><a href="#how">How it works</a><a class="pill" href="#join">Private beta</a></div></nav></div></header>
+  <main id="top">
+    <section class="wrap hero">
+      <div><p class="eyebrow">AI API change tracking / private beta</p><h1>Know when an AI API changes <em>before your app does.</em></h1><p class="lead">ModelWatch turns provider documentation changes into a small, verifiable changelog: deprecations, retirements, replacements and pricing changes — with the original source attached.</p><div class="actions"><a class="button primary" href="#join">Request beta access</a><a class="button secondary" href="#changes">See real changes ↓</a></div></div>
+      <div class="terminal" aria-label="Example ModelWatch event"><div class="termbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="termtitle">modelwatch / event.json</span></div><pre><span class="comment">// an alert you can act on</span>
+{
+  <span class="k">"event"</span>: <span class="s">"model_deprecated"</span>,
+  <span class="k">"provider"</span>: <span class="s">"Google Gemini"</span>,
+  <span class="k">"model"</span>: <span class="s">"gemini-2.5-flash-image"</span>,
+  <span class="k">"shutdown"</span>: <span class="v">"2026-10-02"</span>,
+  <span class="k">"replacement"</span>: <span class="s">"gemini-3.1-flash-image"</span>,
+  <span class="k">"source"</span>: <span class="s">"official docs ↗"</span>
+}</pre></div>
+    </section>
+    <section class="section"><div class="wrap"><div class="section-head"><h2>Small product. Real operational pain.</h2><p>Providers already publish the information. The work is finding it, comparing it and knowing whether it affects your code.</p></div><div class="proof"><div class="proof-card"><span class="proof-tag">01 / detect</span><strong>Watch the sources</strong><p>Official model pages, pricing pages and deprecation notices.</p></div><div class="proof-card"><span class="proof-tag">02 / compare</span><strong>Show before → after</strong><p>Every event has a model, date, status, source and suggested replacement.</p></div><div class="proof-card"><span class="proof-tag">03 / alert</span><strong>Give developers time</strong><p>Start with a public changelog. Add email, RSS and webhooks after validation.</p></div></div></div></section>
+    <section class="section" id="changes"><div class="wrap"><div class="section-head"><h2>Live research feed</h2><p>These are public signals from provider documentation. ModelWatch is not claiming customer validation yet.</p></div><div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="Google Gemini">Google</button><button class="filter" data-filter="OpenAI">OpenAI</button><button class="filter" data-filter="Anthropic">Anthropic</button></div><div class="events" id="events"></div></div></section>
+    <section class="section" id="how"><div class="wrap"><div class="section-head"><h2>What the first version does</h2><p>No customer integration. No payment. No promise of perfect coverage.</p></div><div class="split"><div class="box"><h3>For a developer</h3><ul><li>Follow providers or models.</li><li>Read the exact change and its source.</li><li>Export a JSON event or subscribe to a digest.</li><li>Use the warning to open a migration task.</li></ul></div><div class="box"><h3>For the beta</h3><ul><li>Three providers first.</li><li>Daily snapshots, not real-time monitoring.</li><li>Public changelog before a full API.</li><li>Free signal collection before charging.</li></ul></div></div></div></section>
+    <section class="section" id="join"><div class="wrap join"><div><p class="eyebrow">Help shape the beta</p><h2>Would this save you from checking provider docs?</h2><p>Tell us which provider and change matters. This form prepares a GitHub issue with your answer, so interest is visible and we do not collect payment or private credentials.</p><p style="font-family:var(--mono);font-size:12px;color:#708077">The public repository must be connected before publishing this page.</p></div><form class="form" id="interest-form"><div class="field"><label for="email">Email (optional)</label><input id="email" name="email" type="email" placeholder="you@example.com"></div><div class="field"><label for="provider">Most useful provider</label><select id="provider" name="provider"><option>OpenAI</option><option>Anthropic</option><option>Google Gemini</option><option>OpenRouter</option><option>Other</option></select></div><div class="field"><label for="need">What would you want to be alerted about?</label><input id="need" name="need" required placeholder="e.g. model shutdowns or price changes"></div><button class="button primary" type="submit">Create beta signal</button><small>No payment. The button opens a pre-filled public GitHub issue when the repository is live.</small><div class="success" id="success"></div></form></div></section>
+  </main>
+  <footer class="wrap"><span>MODELWATCH / PRIVATE BETA</span><span class="footer-note">Research prototype. Sources are public provider documentation. Coverage and customer demand are still being tested.</span></footer>
+  <script>
+    const events = [
+      {provider:'Google Gemini',type:'deprecation',model:'gemini-2.5-flash-image',status:'deprecated',date:'2026-10-02',replacement:'gemini-3.1-flash-image or gemini-3.1-flash-lite-image',summary:'Google says the model will be shut down on October 2, 2026 and recommends migrating to a newer image model.',source:'https://ai.google.dev/gemini-api/docs/pricing',label:'Google Gemini API pricing'},
+      {provider:'OpenAI',type:'deprecation',model:'gpt-5.4-cyber',status:'deprecated',date:'2026-10-01',replacement:'gpt-5.6-cyber',summary:'OpenAI lists the model for removal from the API on October 1, 2026 and names a replacement.',source:'https://developers.openai.com/api/docs/deprecations',label:'OpenAI API deprecations'},
+      {provider:'Anthropic',type:'retirement',model:'claude-opus-4-1-20250805',status:'retired',date:'2026-08-05',replacement:'claude-opus-4-8',summary:'Anthropic records the model as retired and gives a recommended replacement.',source:'https://docs.anthropic.com/en/docs/about-claude/model-deprecations',label:'Anthropic model deprecations'},
+      {provider:'Anthropic',type:'policy',model:'provider lifecycle',status:'documented',date:'—',replacement:'—',summary:'Anthropic defines active, legacy, deprecated and retired states, with replacement and retirement dates for deprecated models.',source:'https://docs.anthropic.com/en/docs/about-claude/model-deprecations',label:'Anthropic model lifecycle'},
+      {provider:'Google Gemini',type:'policy',model:'latest aliases',status:'documented',date:'—',replacement:'—',summary:'Google documents that latest aliases can be hot-swapped and that breaking changes receive advance notice.',source:'https://ai.google.dev/gemini-api/docs/models',label:'Google Gemini models'}
+    ];
+    const list = document.getElementById('events');
+    function render(filter='all'){ list.innerHTML=''; events.filter(e=>filter==='all'||e.provider===filter).forEach(e=>{ const card=document.createElement('article'); card.className='event'; card.innerHTML=`<div><div class="event-provider">${e.provider}</div><div class="event-type">${e.type}</div></div><div><h3>${e.model}</h3><p>${e.summary}</p><a href="${e.source}" target="_blank" rel="noreferrer">Read ${e.label} ↗</a></div><div class="event-meta"><b>${e.status}</b>${e.date==='—'?'policy':`effective ${e.date}`}<br><span>${e.replacement==='—'?'':`→ ${e.replacement}`}</span></div>`; list.appendChild(card); }); }
+    render(); document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(btn.dataset.filter);}));
+    document.getElementById('interest-form').addEventListener('submit',e=>{e.preventDefault();const email=document.getElementById('email').value;const provider=document.getElementById('provider').value;const need=document.getElementById('need').value;const title=encodeURIComponent(`[Beta] ${provider}: ${need}`);const body=encodeURIComponent(`Provider: ${provider}\nNeed: ${need}\nEmail: ${email||'(not provided)'}\n\nI would like to hear when ModelWatch beta is available.`);const url=`https://github.com/igorvelho/modelwatch/issues/new?title=${title}&body=${body}`;document.getElementById('success').textContent='Signal prepared. The GitHub issue link is ready once the public repository is connected.';document.getElementById('success').classList.add('show');window.open(url,'_blank','noopener');});
+  </script>
+</body>
+</html>
