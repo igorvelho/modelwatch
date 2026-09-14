@@ -1,0 +1,62 @@
+[
+  {
+    "id": "google-gemini-25-flash-image-deprecation",
+    "provider": "Google Gemini",
+    "type": "deprecation",
+    "model": "gemini-2.5-flash-image",
+    "status": "deprecated",
+    "effective_date": "2026-10-02",
+    "replacement": "gemini-3.1-flash-image or gemini-3.1-flash-lite-image",
+    "summary": "Google says the model will be shut down on October 2, 2026 and recommends migrating to a newer image model.",
+    "source_url": "https://ai.google.dev/gemini-api/docs/pricing",
+    "source_label": "Google Gemini API pricing"
+  },
+  {
+    "id": "openai-gpt-54-cyber-deprecation",
+    "provider": "OpenAI",
+    "type": "deprecation",
+    "model": "gpt-5.4-cyber",
+    "status": "deprecated",
+    "effective_date": "2026-10-01",
+    "replacement": "gpt-5.6-cyber",
+    "summary": "OpenAI lists the model for removal from the API on October 1, 2026 and names a replacement.",
+    "source_url": "https://developers.openai.com/api/docs/deprecations",
+    "source_label": "OpenAI API deprecations"
+  },
+  {
+    "id": "anthropic-opus-41-retirement",
+    "provider": "Anthropic",
+    "type": "retirement",
+    "model": "claude-opus-4-1-20250805",
+    "status": "retired",
+    "effective_date": "2026-08-05",
+    "replacement": "claude-opus-4-8",
+    "summary": "Anthropic's lifecycle table records the model as retired and gives a recommended replacement.",
+    "source_url": "https://docs.anthropic.com/en/docs/about-claude/model-deprecations",
+    "source_label": "Anthropic model deprecations"
+  },
+  {
+    "id": "anthropic-lifecycle-policy",
+    "provider": "Anthropic",
+    "type": "policy",
+    "model": "provider lifecycle",
+    "status": "documented",
+    "effective_date": null,
+    "replacement": null,
+    "summary": "Anthropic defines active, legacy, deprecated and retired states, and says deprecated models receive a replacement and retirement date.",
+    "source_url": "https://docs.anthropic.com/en/docs/about-claude/model-deprecations",
+    "source_label": "Anthropic model lifecycle"
+  },
+  {
+    "id": "google-model-alias-policy",
+    "provider": "Google Gemini",
+    "type": "policy",
+    "model": "latest aliases",
+    "status": "documented",
+    "effective_date": null,
+    "replacement": null,
+    "summary": "Google documents that latest aliases can be hot-swapped and that breaking changes receive advance notice.",
+    "source_url": "https://ai.google.dev/gemini-api/docs/models",
+    "source_label": "Google Gemini models"
+  }
+]
