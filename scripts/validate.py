@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small offline checks for the ModelWatch launch kit."""
+"""Small offline checks for the ModelWatch validation beta."""
 from __future__ import annotations
 
 import json
@@ -21,8 +21,18 @@ def main() -> None:
     page = HTML.read_text()
     for provider in ("OpenAI", "Anthropic", "Google Gemini"):
         assert provider in page, provider
-    for marker in ("github.com/igorvelho/modelwatch/issues/new", "No payment", "private beta"):
+    for marker in (
+        "github.com/igorvelho/modelwatch/issues/new",
+        "No payment",
+        "validation beta",
+        "Do not paste secrets",
+        "Project context",
+    ):
         assert marker.lower() in page.lower(), marker
+    issue_form = ROOT / ".github" / "ISSUE_TEMPLATE" / "beta-interest.yml"
+    form = issue_form.read_text()
+    for marker in ("name: Beta interest", "id: provider", "id: context", "id: commitment"):
+        assert marker.lower() in form.lower(), marker
     print(f"validated {len(events)} public events and launch page")
 
 

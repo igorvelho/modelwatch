@@ -1,71 +1,92 @@
-# ModelWatch — 7-day validation plan
+# ModelWatch — validation experiment
 
 ## Objective
 
-Find out whether developers will take a concrete action around model-change monitoring. Do not measure only views or likes.
+Test whether developers with a real multi-provider AI application will request a source-linked change feed and a way to receive actionable alerts. Measure concrete behaviour, not reach.
+
+## Baseline
+
+At the 2026-09-14 audit:
+
+- the public page and GitHub Pages deployment worked;
+- the repository had 0 stars, 0 forks, 0 open issues and 0 pull requests;
+- no external beta requests or customer conversations were recorded.
+
+This is a clean baseline, not evidence that the idea has failed.
+
+## Hypothesis and target user
+
+**Hypothesis:** a developer maintaining production or near-production software that uses two or more AI providers will request a source-linked diff when it can reveal migration work before an outage, cost increase or capability mismatch.
+
+**Initial ICP:** indie SaaS builders, AI-agent developers, LLM gateways and small engineering teams. Exclude people who only want a generic model list; current catalogue data is already widely available.
+
+## Experiment design
+
+### Step 1 — Prepare
+
+- Keep the public changelog small and source-linked.
+- Collect provider, model/API, requested change, project context, desired delivery and beta commitment.
+- Use public GitHub issues as the transparent signal channel.
+- Do not collect passwords, API keys or private email addresses.
+- Do not create billing or payment infrastructure during this test.
+
+### Step 2 — Distribute
+
+Post the launch to one relevant developer community at a time, only after approving the exact channel and copy. Record the URL, timestamp and approximate audience. Do not use cold outreach or spam.
+
+### Step 3 — Observe
+
+For every issue or public reply, record:
+
+- source and date;
+- provider and model/API;
+- requested event type;
+- project context and whether it is production-related;
+- requested delivery: issue, email/RSS, webhook, API or MCP;
+- stated beta commitment;
+- strength and next action.
+
+### Step 4 — Learn
+
+After the first three qualified signals, update only the most repeated request. Do not add providers or integrations because of a single speculative suggestion.
 
 ## Signal hierarchy
 
-Strong:
+**Strong**
 
-- a developer opens a beta issue with a real provider/model;
-- a developer asks for a webhook or API format;
-- a developer shares a repository or production use case;
-- a developer agrees to a follow-up beta test.
+- a developer describes a real application or migration risk;
+- a developer requests the same delivery feature as someone else;
+- a developer agrees to test a private beta;
+- a developer offers an explicit paid commitment after scope and price are shown.
 
-Weak:
+**Medium**
 
-- page views;
-- stars without a comment;
+- a developer submits a specific provider/model request;
+- a developer asks how to consume the feed or webhook.
+
+**Weak**
+
+- page views, likes or stars without context;
 - generic compliments;
-- social likes;
-- free downloads without a request.
+- a free download without a request;
+- traffic from an irrelevant audience.
 
-## Seven-day procedure
+## Decision gate after seven days
 
-### Day 1 — Publish
+**Continue to a monitored feed prototype** if there are 10 qualified requests, 3 real use cases, 2 repeated paid-feature requests or 1 committed beta tester.
 
-- Publish the repository and static page.
-- Post the launch draft to one developer community first.
-- Do not add payment.
-- Record the exact post URL and timestamp.
+**Narrow the wedge** if there is specific pain but the audience or delivery format is unclear.
 
-### Days 2–3 — Observe
+**Stop or pivot** if the only signal is passive traffic or if developers consistently prefer existing catalogues without needing historical diffs or alerts.
 
-- Read every issue and public reply.
-- Tag each signal: deprecation, pricing, capability, API, webhook, other.
-- Do not argue with negative feedback.
+## Validation log
 
-### Days 4–5 — Narrow
+Use one line per signal. Keep the log factual and do not publish private contact details.
 
-- Update the page with the most requested event type.
-- Add no new provider unless users ask for it.
-- Publish one concrete example from feedback, with permission.
+| date | source | provider/model | requested change | project context | desired delivery | action | strength | next step |
+|---|---|---|---|---|---|---|---|---|
 
-### Days 6–7 — Decide
+## Public links
 
-Continue only if at least one of these is true:
-
-- 10 qualified developers request access;
-- 3 developers describe a real project that would use the feed;
-- 2 developers ask for the same paid feature;
-- 1 developer agrees to test a private beta when available.
-
-Stop or pivot if the only signal is passive traffic.
-
-## What to record
-
-| Field | Example |
-|---|---|
-| date | 2026-09-14 |
-| source | GitHub issue / HN / Product Hunt |
-| provider | OpenAI |
-| requested event | deprecation |
-| project context | internal agent / SaaS / hobby |
-| action | issue / request / comment |
-| strength | strong / medium / weak |
-| next step | reply / ignore / investigate |
-
-## No-payment rule
-
-Do not create a Stripe product or ask for card details during this test. The first gate is concrete interest in the problem, not revenue.
+- Demo: <https://igorvelho.github.io/modelwatch/>
+- Repository and issues: <https://github.com/igorvelho/modelwatch/issues>

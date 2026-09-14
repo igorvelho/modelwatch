@@ -1,0 +1,92 @@
+name: Beta interest
+description: Describe a real ModelWatch use case or the change you need to track
+title: "[Beta] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing ModelWatch. Please describe a real use case if possible.
+
+        Do not include API keys, passwords, customer data or private email addresses.
+
+  - type: dropdown
+    id: provider
+    attributes
+      label: Provider
+      description: Which provider matters most for this request?
+      options:
+        - OpenAI
+        - Anthropic
+        - Google Gemini
+        - OpenRouter
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model or API
+      description: Which model, alias or API endpoint is relevant?
+      placeholder: e.g. gpt-5, Claude, Gemini API, or multiple providers
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change
+    attributes:
+      label: Change to track
+      options:
+        - Deprecation or shutdown
+        - Pricing
+        - Capability or limits
+        - Alias or behaviour change
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Project context
+      description: What are you building, and would this affect production or a near-production system?
+      placeholder: I maintain ... and use ... providers. A missed change would ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: delivery
+    attributes:
+      label: Preferred delivery
+      options:
+        - Email or RSS digest
+        - Webhook
+        - JSON API
+        - MCP server
+        - GitHub issue
+        - Not sure yet
+    validations:
+      required: true
+
+  - type: dropdown
+    id: commitment
+    attributes:
+      label: Beta commitment
+      description: Choose the closest answer; this is research, not a payment.
+      options:
+        - I would test a free beta
+        - I would consider paying for it
+        - I would pay around €19/month if it worked
+        - I would pay around €49/month if it worked
+        - I am only exploring the idea
+    validations:
+      required: true
+
+  - type: input
+    id: github
+    attributes:
+      label: GitHub username (optional)
+      description: Use a GitHub handle only if you want a follow-up in this issue.
+      placeholder: "@username"
+    validations:
+      required: false
